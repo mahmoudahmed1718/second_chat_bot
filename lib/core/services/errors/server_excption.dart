@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:second_chat_bot/core/errors/error_model.dart';
+import 'package:second_chat_bot/core/services/errors/error_model.dart';
 
 class ServerExcption implements Exception {
   final ErrorModel errorModel;

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:second_chat_bot/core/api/api_consumer.dart';
-import 'package:second_chat_bot/core/api/api_interceptor.dart';
-import 'package:second_chat_bot/core/api/end_points.dart';
-import 'package:second_chat_bot/core/errors/server_excption.dart';
+import 'package:second_chat_bot/core/services/api/api_consumer.dart';
+import 'package:second_chat_bot/core/services/api/api_interceptor.dart';
+import 'package:second_chat_bot/core/services/api/end_points.dart';
+import 'package:second_chat_bot/core/services/errors/server_excption.dart';
 
 class DioConsumer extends ApiConsumer {
   final Dio dio;

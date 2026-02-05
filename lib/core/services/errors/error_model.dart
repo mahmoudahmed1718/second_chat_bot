@@ -1,4 +1,4 @@
-import 'package:second_chat_bot/core/api/end_points.dart';
+import 'package:second_chat_bot/core/services/api/end_points.dart';
 
 class ErrorModel {
   final int? stutsCode;

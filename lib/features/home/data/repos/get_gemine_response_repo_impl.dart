@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:second_chat_bot/core/api/dio_consumer.dart';
-import 'package:second_chat_bot/core/api/end_points.dart';
-import 'package:second_chat_bot/core/errors/server_excption.dart';
+import 'package:second_chat_bot/core/services/api/dio_consumer.dart';
+import 'package:second_chat_bot/core/services/api/end_points.dart';
+import 'package:second_chat_bot/core/services/errors/server_excption.dart';
 import 'package:second_chat_bot/features/home/data/models/gemine_reponse/gemine_reponse.dart';
 import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
 import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_repo.dart';
