@@ -1,6 +1,12 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:second_chat_bot/core/services/custom_bloc_observer.dart';
+import 'package:second_chat_bot/core/services/get_it_service.dart';
 
 void main() {
+  Bloc.observer = CustomBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  setUpGetIt();
   runApp(const MyApp());
 }
 

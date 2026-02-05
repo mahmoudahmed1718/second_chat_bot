@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:second_chat_bot/core/services/api/dio_consumer.dart';
+import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/end_points.dart';
 import 'package:second_chat_bot/core/services/errors/server_excption.dart';
 import 'package:second_chat_bot/features/home/data/models/gemine_reponse/gemine_reponse.dart';
@@ -7,16 +7,16 @@ import 'package:second_chat_bot/features/home/domain/entites/gemini_message_enti
 import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_repo.dart';
 
 class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
-  final DioConsumer dioConsumer;
+  final ApiConsumer apiConsumer;
 
-  GetGemineResponseRepoImpl(this.dioConsumer);
+  GetGemineResponseRepoImpl({required this.apiConsumer});
 
   @override
   Future<Either<ServerExcption, GeminiMessageEntity>> getGemineReponse({
     required String message,
   }) async {
     try {
-      final response = await dioConsumer.post(
+      final response = await apiConsumer.post(
         EndPoint.generateContent,
         data: {
           "contents": [
