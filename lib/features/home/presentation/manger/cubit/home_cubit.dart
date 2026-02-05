@@ -5,6 +5,7 @@ import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_rep
 
 part 'home_state.dart';
 
+//
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.getGemineReponseRepo}) : super(HomeInitial());
   final GetGemineReponseRepo getGemineReponseRepo;

@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bloc: ^9.2.0
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   dio: ^5.9.1
@@ -39,6 +40,7 @@ dependencies:
   gap: ^3.0.1
   get_it: ^9.2.0
   hive_flutter: ^1.1.0
+  meta: ^1.17.0
   speech_to_text: ^7.3.0
 
 dev_dependencies:
