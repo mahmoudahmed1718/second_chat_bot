@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:second_chat_bot/core/services/get_it_service.dart';
+import 'package:second_chat_bot/core/utils/app_storage.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
 import 'package:second_chat_bot/core/utils/assets.dart';
+import 'package:second_chat_bot/features/home/presentation/views/home_page.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
 class OnBoardingView extends StatelessWidget {
@@ -41,7 +44,14 @@ class OnBoardingView extends StatelessWidget {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final appStorage = getIt.get<AppStorage>();
+                      appStorage.setOnboardingSeen();
+                      Navigator.pushReplacementNamed(
+                        context,
+                        HomeView.routeName,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
                       shape: RoundedRectangleBorder(
