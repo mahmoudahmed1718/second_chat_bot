@@ -7,14 +7,14 @@ import 'package:second_chat_bot/features/home/presentation/views/widgets/build_c
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_input_text.dart';
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_suggetion_widget.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+  static const routeName = '/home';
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeViewState extends State<HomeView> {
   final ScrollController _scrollController = ScrollController();
 
   @override

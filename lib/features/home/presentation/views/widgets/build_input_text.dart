@@ -93,9 +93,6 @@ class _BuildInputTextState extends State<BuildInputText> {
                               await context.read<HomeCubit>().getGemineReponse(
                                 message: text,
                               );
-
-                              print("Send: $text");
-
                               _formKey.currentState?.reset();
                               hasText.value = false;
                             }
