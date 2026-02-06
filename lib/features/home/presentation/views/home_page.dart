@@ -77,7 +77,6 @@ class _HomePageState extends State<HomePage> {
               message: chatMessage.text,
             );
           } else {
-            // Show the loading bubble at the end
             return const ChatBubble(
               isUser: false,
               message: '',
@@ -101,9 +100,7 @@ class _HomePageState extends State<HomePage> {
         },
       );
     } else if (state is HomeError) {
-      // NOTE: To show error "beside image of robot",
-      // you may need to update ErrorState to pass message data
-      return Center(child: Text(state.message));
+      return ChatBubble(isUser: false, message: state.message);
     }
     return const SizedBox();
   }
