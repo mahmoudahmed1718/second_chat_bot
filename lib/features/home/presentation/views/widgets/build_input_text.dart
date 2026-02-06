@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
+import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -81,9 +83,10 @@ class _BuildInputTextState extends State<BuildInputText> {
                                   .currentState
                                   ?.fields['message']
                                   ?.value;
-                              // await HomeBloc.to.getReponseMessage(
-                              //   message: text,
-                              // );
+
+                              await context.read<HomeCubit>().getGemineReponse(
+                                message: text,
+                              );
 
                               print("Send: $text");
 

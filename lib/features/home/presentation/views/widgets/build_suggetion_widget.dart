@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
+import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
 class BuildSuggetionWidget extends StatelessWidget {
@@ -12,29 +14,29 @@ class BuildSuggetionWidget extends StatelessWidget {
         Gap(18),
         _sectionIcon(Icons.text_snippet),
         _sectionTitle("Explain"),
-        _suggestion("Explain Quantum physics"),
-        _suggestion("What are wormholes explain like i am 5"),
+        _suggestion("Explain Quantum physics", context),
+        _suggestion("What are wormholes explain like i am 5", context),
         Gap(24),
         _sectionIcon(Icons.edit),
         _sectionTitle("Write & edit"),
-        _suggestion("Write a tweet about global warming"),
-        _suggestion("Write a poem about flower and love"),
-        _suggestion("Write a rap song lyrics about"),
+        _suggestion("Write a tweet about global warming", context),
+        _suggestion("Write a poem about flower and love", context),
+        _suggestion("Write a rap song lyrics about", context),
         Gap(24),
         _sectionIcon(Icons.translate),
         _sectionTitle("Translate"),
-        _suggestion("How do you say \"how are you\" in korean?"),
-        _suggestion("Write a poem about flower and love"),
+        _suggestion("How do you say \"how are you\" in korean?", context),
+        _suggestion("Write a poem about flower and love", context),
       ],
     );
   }
 }
 
 // 🔹 Suggestion chip
-Widget _suggestion(String text) {
+Widget _suggestion(String text, BuildContext context) {
   return InkWell(
     onTap: () async {
-      // await HomeBloc.to.getReponseMessage(message: text);
+      await context.read<HomeCubit>().getGemineReponse(message: text);
     },
     child: Container(
       margin: const EdgeInsets.only(bottom: 10),
