@@ -3,9 +3,6 @@ abstract class EndPoint {
 
   static const String generateContent =
       'v1beta/models/gemini-3-flash-preview:generateContent';
-  // static const String login = '/auth/login';
-  // static const String register = '/auth/register';
-  // static const String logout = '/auth/logout';
 }
 
 abstract class Apikeys {
@@ -13,13 +10,4 @@ abstract class Apikeys {
   static const String stauscode = "statusCode";
   static const String message = "message";
   static const String data = "error";
-  static const String accessToken = "access_token";
-  static const String refeshToken = "refresh_token";
-  static const String id = "_id";
-  static const String phone = "phone";
-  static const String password = "password";
-  static const String name = "displayName";
-  static const String address = "address";
-  static const String experience = "experienceYears";
-  static const String level = "level";
 }

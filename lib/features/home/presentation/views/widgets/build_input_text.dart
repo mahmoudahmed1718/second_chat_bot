@@ -27,6 +27,12 @@ class _BuildInputTextState extends State<BuildInputText> {
   }
 
   @override
+  void dispose() {
+    _speech.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),

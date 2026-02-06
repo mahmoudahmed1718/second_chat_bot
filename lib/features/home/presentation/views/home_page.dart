@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:second_chat_bot/core/services/get_it_service.dart';
-import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_repo.dart';
 import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_app_bar.dart';
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_bubble.dart';
@@ -66,12 +64,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBody(HomeState state) {
     if (state is HomeInitial) {
       return const SingleChildScrollView(child: BuildSuggetionWidget());
-    }
-    // FIX: Handle Loading State to show "three dots"
-    else if (state is HomeLoading) {
+    } else if (state is HomeLoading) {
       return ListView.builder(
         controller: _scrollController,
-        // Assuming 'context.read<HomeCubit>().messages' holds previous messages
         itemCount: context.read<HomeCubit>().messages.length + 1,
         itemBuilder: (context, index) {
           final messages = context.read<HomeCubit>().messages;
