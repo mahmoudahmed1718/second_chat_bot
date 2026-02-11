@@ -5,10 +5,10 @@ import 'package:second_chat_bot/core/services/custom_bloc_observer.dart';
 import 'package:second_chat_bot/core/services/get_it_service.dart';
 import 'package:second_chat_bot/features/splash/presentation/view/splash_view.dart';
 
-void main() {
+void main() async {
   Bloc.observer = CustomBlocObserver();
-  WidgetsFlutterBinding.ensureInitialized();
   setUpGetIt();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
 }

@@ -12,37 +12,35 @@ class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
   GetGemineResponseRepoImpl({required this.apiConsumer});
 
   @override
-  Future<Either<ServerExcption, GeminiMessageEntity>> getGemineReponse({
-    required String message,
+  Future<Either<ServerException, GeminiMessageEntity>> getGemineReponse({
+    required List<GeminiMessageEntity> messages,
   }) async {
     try {
       final response = await apiConsumer.post(
         EndPoint.generateContent,
         data: {
-          "contents": [
-            {
+          "contents": messages.map((e) {
+            return {
+              "role": e.isFromUser ? "user" : "model",
               "parts": [
-                {"text": message},
+                {"text": e.text},
               ],
-            },
-          ],
+            };
+          }).toList(),
         },
       );
-      // FIX: Parse the response into your Data Model
+
       final gemineResponseModel = GemineReponse.fromJson(response);
 
-      // FIX: Map the Data Model to the Entity
-      // Assuming your GemineReponse has a method to map to the entity,
-      // or you do it manually here:
       final GeminiMessageEntity entity = GeminiMessageEntity(
         text:
             gemineResponseModel.candidates?.first.content?.parts?.first.text ??
-            '', // Adjust based on your model's structure
+            '',
         isFromUser: false,
       );
 
       return Right(entity);
-    } on ServerExcption catch (e) {
+    } on ServerException catch (e) {
       return Left(e);
     }
   }

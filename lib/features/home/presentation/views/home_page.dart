@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
 import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_app_bar.dart';
 import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_bubble.dart';
@@ -10,12 +11,15 @@ import 'package:second_chat_bot/features/home/presentation/views/widgets/build_s
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
   static const routeName = '/home';
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
   final ScrollController _scrollController = ScrollController();
+
+  final List<GeminiMessageEntity> _messages = [];
 
   @override
   void dispose() {
@@ -35,22 +39,44 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  void _sendMessage(String text) {
+    if (text.trim().isEmpty) return;
+
+    final userMessage = GeminiMessageEntity(text: text, isFromUser: true);
+
+    _messages.add(userMessage);
+
+    _scrollToBottom();
+
+    context.read<HomeCubit>().getGemineReponse(messages: _messages);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildChatAppBar(context),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            _scrollToBottom();
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state is HomeLoaded) {
+              _messages.add(state.message);
+              _scrollToBottom();
+            }
 
+            if (state is HomeError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            }
+          },
+          builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
                   Expanded(child: _buildBody(state)),
-                  const BuildInputText(),
+                  BuildInputText(onSend: _sendMessage),
                   const Gap(16),
                 ],
               ),
@@ -62,46 +88,29 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildBody(HomeState state) {
-    if (state is HomeInitial) {
+    if (_messages.isEmpty && state is HomeInitial) {
       return const SingleChildScrollView(child: BuildSuggetionWidget());
-    } else if (state is HomeLoading) {
-      return ListView.builder(
-        controller: _scrollController,
-        itemCount: context.read<HomeCubit>().messages.length + 1,
-        itemBuilder: (context, index) {
-          final messages = context.read<HomeCubit>().messages;
-          if (index < messages.length) {
-            final chatMessage = messages[index];
-            return ChatBubble(
-              isUser: chatMessage.isFromUser,
-              message: chatMessage.text,
-            );
-          } else {
-            return const ChatBubble(
-              isUser: false,
-              message: '',
-              isLoading: true, // This triggers the dots
-            );
-          }
-        },
-      );
-    } else if (state is HomeLoaded) {
-      return ListView.builder(
-        controller: _scrollController,
-        itemCount: state.messages!.length,
-        padding: const EdgeInsets.only(top: 10),
-        itemBuilder: (context, index) {
-          final chatMessage = state.messages![index];
+    }
+
+    return ListView.builder(
+      controller: _scrollController,
+      padding: const EdgeInsets.only(top: 10),
+      itemCount: _messages.length + (state is HomeLoading ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index < _messages.length) {
+          final chatMessage = _messages[index];
           return ChatBubble(
             isUser: chatMessage.isFromUser,
             message: chatMessage.text,
-            isLoading: false,
           );
-        },
-      );
-    } else if (state is HomeError) {
-      return ChatBubble(isUser: false, message: state.message);
-    }
-    return const SizedBox();
+        } else {
+          return const ChatBubble(
+            isUser: false,
+            message: '',
+            isLoading: true, // Show AI loading dots
+          );
+        }
+      },
+    );
   }
 }

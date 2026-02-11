@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
+import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
 import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
@@ -36,7 +37,9 @@ class BuildSuggetionWidget extends StatelessWidget {
 Widget _suggestion(String text, BuildContext context) {
   return InkWell(
     onTap: () async {
-      await context.read<HomeCubit>().getGemineReponse(message: text);
+      await context.read<HomeCubit>().getGemineReponse(
+        messages: [GeminiMessageEntity(text: text, isFromUser: true)],
+      );
     },
     child: Container(
       margin: const EdgeInsets.only(bottom: 10),

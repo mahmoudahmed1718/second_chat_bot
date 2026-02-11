@@ -15,7 +15,6 @@ void setUpGetIt() async {
 
   getIt.registerSingleton<AppStorage>(AppStorage());
   getIt.registerSingleton<ApiConsumer>(DioConsumer(dio: Dio()));
-
   getIt.registerSingleton<GetGemineReponseRepo>(
     GetGemineResponseRepoImpl(apiConsumer: getIt<ApiConsumer>()),
   );

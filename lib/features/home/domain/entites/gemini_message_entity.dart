@@ -4,8 +4,3 @@ class GeminiMessageEntity {
 
   const GeminiMessageEntity({required this.text, required this.isFromUser});
 }
-
-class GeminiMessageEntityList {
-  final List<GeminiMessageEntity> messages;
-  GeminiMessageEntityList({required this.messages});
-}

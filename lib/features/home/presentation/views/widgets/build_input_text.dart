@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
-import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class BuildInputText extends StatefulWidget {
-  const BuildInputText({super.key});
+  final Function(String text) onSend;
+  const BuildInputText({super.key, required this.onSend});
 
   @override
   State<BuildInputText> createState() => _BuildInputTextState();
@@ -55,7 +55,7 @@ class _BuildInputTextState extends State<BuildInputText> {
                     decoration: InputDecoration(
                       hintText: "Write Your Message",
                       hintStyle: AppStyles.fontStyle13.copyWith(
-                        color: Color(0XFFA1A1A1),
+                        color: const Color(0XFFA1A1A1),
                       ),
                       border: InputBorder.none,
                     ),
@@ -84,17 +84,19 @@ class _BuildInputTextState extends State<BuildInputText> {
                         color: active ? AppColors.primaryColor : Colors.grey,
                       ),
                       onPressed: active
-                          ? () async {
+                          ? () {
                               final text = _formKey
                                   .currentState
                                   ?.fields['message']
                                   ?.value;
 
-                              await context.read<HomeCubit>().getGemineReponse(
-                                message: text,
-                              );
-                              _formKey.currentState?.reset();
-                              hasText.value = false;
+                              if (text != null && text.trim().isNotEmpty) {
+                                // ✅ Call the callback instead of calling Cubit directly
+                                widget.onSend(text);
+
+                                _formKey.currentState?.reset();
+                                hasText.value = false;
+                              }
                             }
                           : null,
                     );

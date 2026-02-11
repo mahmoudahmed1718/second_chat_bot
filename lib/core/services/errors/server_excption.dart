@@ -1,51 +1,46 @@
 import 'package:dio/dio.dart';
 import 'package:second_chat_bot/core/services/errors/error_model.dart';
 
-class ServerExcption implements Exception {
+class ServerException implements Exception {
   final ErrorModel errorModel;
 
-  ServerExcption({required this.errorModel});
+  ServerException({required this.errorModel});
 }
 
 void handleErrorExpectation(DioException e) {
+  // Fallback error when response is null (e.g., no internet)
+  final fallbackError = ErrorModel(
+    statusCode: null,
+    message: "No internet connection. Please check your network.",
+    status: "NETWORK_ERROR",
+  );
+
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
     case DioExceptionType.sendTimeout:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
     case DioExceptionType.receiveTimeout:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
-    case DioExceptionType.badCertificate:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
-    case DioExceptionType.cancel:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
     case DioExceptionType.connectionError:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
     case DioExceptionType.unknown:
-      throw ServerExcption(errorModel: ErrorModel.fromJson(e.response!.data));
+      throw ServerException(errorModel: fallbackError);
+
+    case DioExceptionType.badCertificate:
+    case DioExceptionType.cancel:
+      throw ServerException(
+        errorModel: ErrorModel(
+          statusCode: e.response?.statusCode,
+          message: "Request cancelled or certificate issue.",
+          status: e.response?.statusMessage,
+        ),
+      );
 
     case DioExceptionType.badResponse:
-      switch (e.response!.statusCode) {
-        case 400:
-          throw ServerExcption(
-            errorModel: ErrorModel.fromJson(e.response!.data),
-          );
-        case 401:
-          throw ServerExcption(
-            errorModel: ErrorModel.fromJson(e.response!.data),
-          );
-        case 403:
-          throw ServerExcption(
-            errorModel: ErrorModel.fromJson(e.response!.data),
-          );
-        case 404:
-          throw ServerExcption(
-            errorModel: ErrorModel.fromJson(e.response!.data),
-          );
-        case 500:
-          throw ServerExcption(
-            errorModel: ErrorModel.fromJson(e.response!.data),
-          );
+      // If server responded with an error
+      if (e.response?.data != null) {
+        throw ServerException(
+          errorModel: ErrorModel.fromJson(e.response!.data),
+        );
+      } else {
+        throw ServerException(errorModel: fallbackError);
       }
   }
 }

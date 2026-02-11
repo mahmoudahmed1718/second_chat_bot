@@ -1,15 +1,16 @@
-import 'package:second_chat_bot/core/services/api/end_points.dart';
-
 class ErrorModel {
-  final int? stutsCode;
+  final int? statusCode;
   final String? message;
+  final String? status;
 
-  ErrorModel({required this.stutsCode, required this.message});
+  ErrorModel({this.statusCode, this.message, this.status});
 
   factory ErrorModel.fromJson(Map<String, dynamic> jsonData) {
+    final error = jsonData['error'] ?? {};
     return ErrorModel(
-      stutsCode: jsonData[Apikeys.stauscode],
-      message: jsonData[Apikeys.message],
+      statusCode: error['code'],
+      message: error['message'],
+      status: error['status'],
     );
   }
 }

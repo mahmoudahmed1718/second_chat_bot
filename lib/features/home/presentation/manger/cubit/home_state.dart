@@ -8,11 +8,12 @@ final class HomeInitial extends HomeState {}
 final class HomeLoading extends HomeState {}
 
 final class HomeLoaded extends HomeState {
-  final List<GeminiMessageEntity>? messages;
-  HomeLoaded({this.messages});
+  final GeminiMessageEntity message;
+
+  HomeLoaded({required this.message});
 }
 
 final class HomeError extends HomeState {
-  final String message;
-  HomeError({required this.message});
+  final String errorMessage;
+  HomeError({required this.errorMessage});
 }
