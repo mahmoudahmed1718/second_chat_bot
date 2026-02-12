@@ -27,38 +27,6 @@ class _ChatViewState extends State<ChatView> {
     super.dispose();
   }
 
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  void _sendMessage(String text) {
-    if (text.trim().isEmpty) return;
-
-    final userMessage = GeminiMessageEntity(text: text, isFromUser: true);
-
-    _messages.add(userMessage);
-
-    _scrollToBottom();
-
-    context.read<ChatCubit>().getGemineReponse(messages: _messages);
-  }
-
-  void _retryMessage(GeminiMessageEntity message) {
-    message.isFailed = false;
-
-    context.read<ChatCubit>().getGemineReponse(messages: _messages);
-
-    _scrollToBottom();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +39,6 @@ class _ChatViewState extends State<ChatView> {
               _messages.add(state.message);
               _scrollToBottom();
             }
-
             if (state is ChatError) {
               if (_messages.isNotEmpty) {
                 _messages.last.isFailed = true;
@@ -105,6 +72,7 @@ class _ChatViewState extends State<ChatView> {
       );
     }
     return ListView.builder(
+      reverse: true,
       controller: _scrollController,
       padding: const EdgeInsets.only(top: 10),
       itemCount: _messages.length + (state is ChatLoading ? 1 : 0),
@@ -128,5 +96,35 @@ class _ChatViewState extends State<ChatView> {
         }
       },
     );
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  void _sendMessage(String text) {
+    if (text.trim().isEmpty) return;
+
+    final userMessage = GeminiMessageEntity(text: text, isFromUser: true);
+
+    _messages.add(userMessage);
+    context.read<ChatCubit>().getGemineReponse(messages: _messages);
+    _scrollToBottom();
+  }
+
+  void _retryMessage(GeminiMessageEntity message) {
+    message.isFailed = false;
+
+    context.read<ChatCubit>().getGemineReponse(messages: _messages);
+
+    _scrollToBottom();
   }
 }
