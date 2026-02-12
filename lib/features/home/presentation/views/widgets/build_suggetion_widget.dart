@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
-import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
-import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
 class BuildSuggetionWidget extends StatelessWidget {
-  const BuildSuggetionWidget({super.key});
+  const BuildSuggetionWidget({super.key, required this.onTap});
+
+  final void Function(String)? onTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -15,32 +14,36 @@ class BuildSuggetionWidget extends StatelessWidget {
         Gap(18),
         _sectionIcon(Icons.text_snippet),
         _sectionTitle("Explain"),
-        _suggestion("Explain Quantum physics", context),
-        _suggestion("What are wormholes explain like i am 5", context),
+        _suggestion("Explain Quantum physics", context, onTap),
+        _suggestion("What are wormholes explain like i am 5", context, onTap),
         Gap(24),
         _sectionIcon(Icons.edit),
         _sectionTitle("Write & edit"),
-        _suggestion("Write a tweet about global warming", context),
-        _suggestion("Write a poem about flower and love", context),
-        _suggestion("Write a rap song lyrics about", context),
+        _suggestion("Write a tweet about global warming", context, onTap),
+        _suggestion("Write a poem about flower and love", context, onTap),
+        _suggestion("Write a rap song lyrics about", context, onTap),
         Gap(24),
         _sectionIcon(Icons.translate),
         _sectionTitle("Translate"),
-        _suggestion("How do you say \"how are you\" in korean?", context),
-        _suggestion("Write a poem about flower and love", context),
+        _suggestion(
+          "How do you say \"how are you\" in korean?",
+          context,
+          onTap,
+        ),
+        _suggestion("Write a poem about flower and love", context, onTap),
       ],
     );
   }
 }
 
 // 🔹 Suggestion chip
-Widget _suggestion(String text, BuildContext context) {
-  return InkWell(
-    onTap: () async {
-      await context.read<HomeCubit>().getGemineReponse(
-        messages: [GeminiMessageEntity(text: text, isFromUser: true)],
-      );
-    },
+Widget _suggestion(
+  String text,
+  BuildContext context,
+  void Function(String)? onTap,
+) {
+  return GestureDetector(
+    onTap: () => onTap!(text),
     child: Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

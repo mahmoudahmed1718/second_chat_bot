@@ -38,14 +38,13 @@ class _LoadingDotsState extends State<LoadingDots>
             end: 1.0,
             delay: index * 0.2,
           ).animate(_controller),
-          child: const Text(".", style: AppStyles.fontStyle15),
+          child: const Text(".", style: AppStyles.fontStyle23),
         );
       }),
     );
   }
 }
 
-// Helper class for staggered animation
 class DelayTween extends Tween<double> {
   final double delay;
 

@@ -1,6 +1,11 @@
 class GeminiMessageEntity {
   final String text;
   final bool isFromUser;
+  bool isFailed;
 
-  const GeminiMessageEntity({required this.text, required this.isFromUser});
+  GeminiMessageEntity({
+    required this.text,
+    required this.isFromUser,
+    this.isFailed = false,
+  });
 }

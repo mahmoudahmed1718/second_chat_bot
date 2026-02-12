@@ -51,6 +51,14 @@ class _HomeViewState extends State<HomeView> {
     context.read<HomeCubit>().getGemineReponse(messages: _messages);
   }
 
+  void _retryMessage(GeminiMessageEntity message) {
+    message.isFailed = false;
+
+    context.read<HomeCubit>().getGemineReponse(messages: _messages);
+
+    _scrollToBottom();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +73,9 @@ class _HomeViewState extends State<HomeView> {
             }
 
             if (state is HomeError) {
+              if (_messages.isNotEmpty) {
+                _messages.last.isFailed = true;
+              }
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
@@ -89,9 +100,10 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildBody(HomeState state) {
     if (_messages.isEmpty && state is HomeInitial) {
-      return const SingleChildScrollView(child: BuildSuggetionWidget());
+      return SingleChildScrollView(
+        child: BuildSuggetionWidget(onTap: _sendMessage),
+      );
     }
-
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.only(top: 10),
@@ -102,6 +114,10 @@ class _HomeViewState extends State<HomeView> {
           return ChatBubble(
             isUser: chatMessage.isFromUser,
             message: chatMessage.text,
+            isFailed: chatMessage.isFailed,
+            onRetry: chatMessage.isFailed
+                ? () => _retryMessage(chatMessage)
+                : null,
           );
         } else {
           return const ChatBubble(

@@ -35,8 +35,10 @@ class _SplashViewState extends State<SplashView> {
     final isOnboardingSeen = appStorage.getOnboardingSeen();
 
     if (isOnboardingSeen) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, HomeView.routeName);
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, OnBoardingView.routeName);
     }
   }

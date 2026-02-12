@@ -6,6 +6,7 @@ import 'package:second_chat_bot/core/utils/assets.dart';
 
 AppBar buildChatAppBar(BuildContext context) {
   return AppBar(
+    automaticallyImplyLeading: false,
     title: Row(
       children: [
         Gap(16),
