@@ -4,7 +4,7 @@ import 'package:second_chat_bot/core/services/get_it_service.dart';
 import 'package:second_chat_bot/core/utils/app_storage.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
 import 'package:second_chat_bot/core/utils/assets.dart';
-import 'package:second_chat_bot/features/home/presentation/views/home_page.dart';
+import 'package:second_chat_bot/features/home/Ui/views/home_page.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
 class OnBoardingView extends StatelessWidget {

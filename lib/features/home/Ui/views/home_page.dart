@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
-import 'package:second_chat_bot/features/home/presentation/manger/cubit/home_cubit.dart';
-import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_app_bar.dart';
-import 'package:second_chat_bot/features/home/presentation/views/widgets/build_chat_bubble.dart';
-import 'package:second_chat_bot/features/home/presentation/views/widgets/build_input_text.dart';
-import 'package:second_chat_bot/features/home/presentation/views/widgets/build_suggetion_widget.dart';
+import 'package:second_chat_bot/features/home/Ui/manger/cubit/home_cubit.dart';
+import 'package:second_chat_bot/features/home/Ui/views/widgets/build_chat_app_bar.dart';
+import 'package:second_chat_bot/features/home/Ui/views/widgets/build_chat_bubble.dart';
+import 'package:second_chat_bot/features/home/Ui/views/widgets/build_input_text.dart';
+import 'package:second_chat_bot/features/home/Ui/views/widgets/build_suggetion_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
