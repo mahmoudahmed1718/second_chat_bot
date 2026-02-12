@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/end_points.dart';
 import 'package:second_chat_bot/core/services/errors/server_excption.dart';
-import 'package:second_chat_bot/features/home/data/models/gemine_reponse/gemine_reponse.dart';
-import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
-import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_repo.dart';
+import 'package:second_chat_bot/features/chat/data/models/gemine_reponse/gemine_reponse.dart';
+import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
+import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_repo.dart';
 
 class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
   final ApiConsumer apiConsumer;

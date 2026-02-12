@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:second_chat_bot/features/home/domain/entites/gemini_message_entity.dart';
-import 'package:second_chat_bot/features/home/Ui/manger/cubit/home_cubit.dart';
-import 'package:second_chat_bot/features/home/Ui/views/widgets/build_chat_app_bar.dart';
-import 'package:second_chat_bot/features/home/Ui/views/widgets/build_chat_bubble.dart';
-import 'package:second_chat_bot/features/home/Ui/views/widgets/build_input_text.dart';
-import 'package:second_chat_bot/features/home/Ui/views/widgets/build_suggetion_widget.dart';
+import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
+import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_app_bar.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_input_text.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_suggetion_widget.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ChatView extends StatefulWidget {
+  const ChatView({super.key});
   static const routeName = '/home';
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ChatView> createState() => _ChatViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
   final List<GeminiMessageEntity> _messages = [];
@@ -48,13 +48,13 @@ class _HomeViewState extends State<HomeView> {
 
     _scrollToBottom();
 
-    context.read<HomeCubit>().getGemineReponse(messages: _messages);
+    context.read<ChatCubit>().getGemineReponse(messages: _messages);
   }
 
   void _retryMessage(GeminiMessageEntity message) {
     message.isFailed = false;
 
-    context.read<HomeCubit>().getGemineReponse(messages: _messages);
+    context.read<ChatCubit>().getGemineReponse(messages: _messages);
 
     _scrollToBottom();
   }
@@ -65,14 +65,14 @@ class _HomeViewState extends State<HomeView> {
       appBar: buildChatAppBar(context),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocConsumer<HomeCubit, HomeState>(
+        child: BlocConsumer<ChatCubit, ChatState>(
           listener: (context, state) {
-            if (state is HomeLoaded) {
+            if (state is ChatLoaded) {
               _messages.add(state.message);
               _scrollToBottom();
             }
 
-            if (state is HomeError) {
+            if (state is ChatError) {
               if (_messages.isNotEmpty) {
                 _messages.last.isFailed = true;
               }
@@ -98,8 +98,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _buildBody(HomeState state) {
-    if (_messages.isEmpty && state is HomeInitial) {
+  Widget _buildBody(ChatState state) {
+    if (_messages.isEmpty && state is ChatInitial) {
       return SingleChildScrollView(
         child: BuildSuggetionWidget(onTap: _sendMessage),
       );
@@ -107,7 +107,7 @@ class _HomeViewState extends State<HomeView> {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.only(top: 10),
-      itemCount: _messages.length + (state is HomeLoading ? 1 : 0),
+      itemCount: _messages.length + (state is ChatLoading ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < _messages.length) {
           final chatMessage = _messages[index];

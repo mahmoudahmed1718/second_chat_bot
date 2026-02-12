@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:second_chat_bot/core/services/get_it_service.dart';
 import 'package:second_chat_bot/core/utils/app_storage.dart';
 import 'package:second_chat_bot/core/utils/assets.dart';
-import 'package:second_chat_bot/features/home/Ui/views/home_page.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/chat_page.dart';
 import 'package:second_chat_bot/features/splash/presentation/view/on_boarding_view.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
@@ -36,7 +36,7 @@ class _SplashViewState extends State<SplashView> {
 
     if (isOnboardingSeen) {
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, HomeView.routeName);
+      Navigator.pushReplacementNamed(context, ChatView.routeName);
     } else {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, OnBoardingView.routeName);

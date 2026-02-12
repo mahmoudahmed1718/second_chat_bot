@@ -4,8 +4,8 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/dio_consumer.dart';
 import 'package:second_chat_bot/core/utils/app_storage.dart';
-import 'package:second_chat_bot/features/home/data/repos/get_gemine_response_repo_impl.dart';
-import 'package:second_chat_bot/features/home/domain/repo/get_gemine_reponse_repo.dart';
+import 'package:second_chat_bot/features/chat/data/repos/get_gemine_response_repo_impl.dart';
+import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_repo.dart';
 
 final getIt = GetIt.instance;
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/utils/assets.dart';
-import 'package:second_chat_bot/features/home/Ui/views/widgets/loading_dots.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/loading_dots.dart';
 
 class ChatBubble extends StatelessWidget {
   final bool isUser;
