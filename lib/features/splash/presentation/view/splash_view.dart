@@ -31,15 +31,18 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> execute(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
-    final appStorage = getIt.get<AppStorage>();
-    final isOnboardingSeen = appStorage.getOnboardingSeen();
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacementNamed(context, ChatView.routeName);
 
-    if (isOnboardingSeen) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, ChatView.routeName);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, OnBoardingView.routeName);
-    }
+    // final appStorage = getIt.get<AppStorage>();
+    // final isOnboardingSeen = appStorage.getOnboardingSeen();
+
+    // if (isOnboardingSeen) {
+    //   // ignore: use_build_context_synchronously
+    //
+    // } else {
+    //   // ignore: use_build_context_synchronously
+    //   Navigator.pushReplacementNamed(context, OnBoardingView.routeName);
+    // }
   }
 }

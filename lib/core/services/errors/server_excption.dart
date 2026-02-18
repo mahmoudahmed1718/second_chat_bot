@@ -8,7 +8,6 @@ class ServerException implements Exception {
 }
 
 void handleErrorExpectation(DioException e) {
-  // Fallback error when response is null (e.g., no internet)
   final fallbackError = ErrorModel(
     statusCode: null,
     message: "No internet connection. Please check your network.",
@@ -34,7 +33,6 @@ void handleErrorExpectation(DioException e) {
       );
 
     case DioExceptionType.badResponse:
-      // If server responded with an error
       if (e.response?.data != null) {
         throw ServerException(
           errorModel: ErrorModel.fromJson(e.response!.data),

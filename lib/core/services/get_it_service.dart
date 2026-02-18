@@ -10,10 +10,10 @@ import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_rep
 final getIt = GetIt.instance;
 
 void setUpGetIt() async {
-  await Hive.initFlutter();
-  await Hive.openBox('appBox');
+  // await Hive.initFlutter();
+  // await Hive.openBox('appBox');
 
-  getIt.registerSingleton<AppStorage>(AppStorage());
+  // getIt.registerSingleton<AppStorage>(AppStorage());
   getIt.registerSingleton<ApiConsumer>(DioConsumer(dio: Dio()));
   getIt.registerSingleton<GetGemineReponseRepo>(
     GetGemineResponseRepoImpl(apiConsumer: getIt<ApiConsumer>()),

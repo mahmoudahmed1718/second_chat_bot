@@ -18,7 +18,6 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
-
   final List<GeminiMessageEntity> _messages = [];
 
   @override
@@ -30,6 +29,7 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: buildChatAppBar(context),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -39,10 +39,12 @@ class _ChatViewState extends State<ChatView> {
               _messages.add(state.message);
               _scrollToBottom();
             }
+
             if (state is ChatError) {
               if (_messages.isNotEmpty) {
                 _messages.last.isFailed = true;
               }
+
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
@@ -71,14 +73,15 @@ class _ChatViewState extends State<ChatView> {
         child: BuildSuggetionWidget(onTap: _sendMessage),
       );
     }
+
     return ListView.builder(
-      reverse: true,
       controller: _scrollController,
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       itemCount: _messages.length + (state is ChatLoading ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < _messages.length) {
           final chatMessage = _messages[index];
+
           return ChatBubble(
             isUser: chatMessage.isFromUser,
             message: chatMessage.text,
@@ -88,11 +91,7 @@ class _ChatViewState extends State<ChatView> {
                 : null,
           );
         } else {
-          return const ChatBubble(
-            isUser: false,
-            message: '',
-            isLoading: true, // Show AI loading dots
-          );
+          return const ChatBubble(isUser: false, message: '', isLoading: true);
         }
       },
     );
@@ -103,7 +102,7 @@ class _ChatViewState extends State<ChatView> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 250),
           curve: Curves.easeOut,
         );
       }
@@ -116,7 +115,9 @@ class _ChatViewState extends State<ChatView> {
     final userMessage = GeminiMessageEntity(text: text, isFromUser: true);
 
     _messages.add(userMessage);
+
     context.read<ChatCubit>().getGemineReponse(messages: _messages);
+
     _scrollToBottom();
   }
 

@@ -3,6 +3,9 @@ import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/end_points.dart';
 import 'package:second_chat_bot/core/services/errors/server_excption.dart';
 import 'package:second_chat_bot/features/chat/data/models/gemine_reponse/gemine_reponse.dart';
+import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/gemine_requset.dart';
+import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/content.dart';
+import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/part.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_repo.dart';
 
@@ -16,18 +19,15 @@ class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
     required List<GeminiMessageEntity> messages,
   }) async {
     try {
+      final request = GemineRequset(
+        contents: messages.map((e) {
+          return Content(parts: [Part(text: e.text)]);
+        }).toList(),
+      );
+
       final response = await apiConsumer.post(
         EndPoint.generateContent,
-        data: {
-          "contents": messages.map((e) {
-            return {
-              "role": e.isFromUser ? "user" : "model",
-              "parts": [
-                {"text": e.text},
-              ],
-            };
-          }).toList(),
-        },
+        data: request.toJson(),
       );
 
       final gemineResponseModel = GemineReponse.fromJson(response);
