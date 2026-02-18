@@ -21,7 +21,10 @@ class MessageListViewBlocConsumer extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return MessagesListView(messages: _messages);
+        return MessagesListView(
+          isloading: state is SendMessageLoading,
+          messages: _messages,
+        );
       },
     );
   }
