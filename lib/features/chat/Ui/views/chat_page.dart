@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:second_chat_bot/core/services/get_it_service.dart';
+import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_app_bar.dart';
 
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/messages_list_view.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/messages_list_view_bloc_consumer.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
-class ChatView extends StatefulWidget {
-  const ChatView({super.key});
+import '../../domain/repo/get_gemine_reponse_repo.dart';
+import 'widgets/build_input_text.dart';
+
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
   static const routeName = '/home';
 
   @override
-  State<ChatView> createState() => _ChatViewState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatViewState extends State<ChatView> {
+class _ChatPageState extends State<ChatPage> {
   final List<GeminiMessageEntity> _messages = [];
 
   @override
@@ -22,15 +28,20 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: buildChatAppBar(context),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(child: MessagesListView(messages: _messages)),
-          // BuildInputText(onSend: )
-        ],
+    return BlocProvider(
+      create: (context) => SendMessageCubit(
+        getGemineReponseRepo: getIt.get<GetGemineReponseRepo>(),
+      ),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: buildChatAppBar(context),
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            Expanded(child: MessageListViewBlocConsumer(messages: _messages)),
+            BuildInputText(messages: _messages),
+          ],
+        ),
       ),
     );
   }

@@ -49,7 +49,7 @@ class OnBoardingView extends StatelessWidget {
                       appStorage.setOnboardingSeen();
                       Navigator.pushReplacementNamed(
                         context,
-                        ChatView.routeName,
+                        ChatPage.routeName,
                       );
                     },
                     style: ElevatedButton.styleFrom(

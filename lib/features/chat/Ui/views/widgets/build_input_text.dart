@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
+import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
+import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class BuildInputText extends StatefulWidget {
-  final Function(String text) onSend;
-  const BuildInputText({super.key, required this.onSend});
+  final List<GeminiMessageEntity> messages;
+  const BuildInputText({super.key, required this.messages});
 
   @override
   State<BuildInputText> createState() => _BuildInputTextState();
@@ -91,9 +94,16 @@ class _BuildInputTextState extends State<BuildInputText> {
                                   ?.value;
 
                               if (text != null && text.trim().isNotEmpty) {
-                                // ✅ Call the callback instead of calling Cubit directly
-                                widget.onSend(text);
-
+                                var message = GeminiMessageEntity(
+                                  text: text,
+                                  isFromUser: true,
+                                );
+                                widget.messages.add(message);
+                                context
+                                    .read<SendMessageCubit>()
+                                    .getGemineReponse(
+                                      messages: widget.messages,
+                                    );
                                 _formKey.currentState?.reset();
                                 hasText.value = false;
                               }

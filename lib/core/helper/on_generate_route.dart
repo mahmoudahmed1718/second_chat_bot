@@ -11,15 +11,8 @@ Route<dynamic> ongenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case SplashView.routeName:
       return MaterialPageRoute(builder: (_) => const SplashView());
-    case ChatView.routeName:
-      return MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) => ChatCubit(
-            getGemineReponseRepo: getIt.get<GetGemineReponseRepo>(),
-          ),
-          child: const ChatView(),
-        ),
-      );
+    case ChatPage.routeName:
+      return MaterialPageRoute(builder: (_) => const ChatPage());
     case OnBoardingView.routeName:
       return MaterialPageRoute(builder: (_) => const OnBoardingView());
     default:

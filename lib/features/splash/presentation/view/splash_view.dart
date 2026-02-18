@@ -32,7 +32,7 @@ class _SplashViewState extends State<SplashView> {
   Future<void> execute(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
     // ignore: use_build_context_synchronously
-    Navigator.pushReplacementNamed(context, ChatView.routeName);
+    Navigator.pushReplacementNamed(context, ChatPage.routeName);
 
     // final appStorage = getIt.get<AppStorage>();
     // final isOnboardingSeen = appStorage.getOnboardingSeen();

@@ -1,19 +1,19 @@
 part of 'chat_cubit.dart';
 
 @immutable
-sealed class ChatState {}
+sealed class SendMessageState {}
 
-final class ChatInitial extends ChatState {}
+final class SendMessageInitial extends SendMessageState {}
 
-final class ChatLoading extends ChatState {}
+final class SendMessageLoading extends SendMessageState {}
 
-final class ChatLoaded extends ChatState {
+final class SendMessageLoaded extends SendMessageState {
   final GeminiMessageEntity message;
 
-  ChatLoaded({required this.message});
+  SendMessageLoaded({required this.message});
 }
 
-final class ChatError extends ChatState {
+final class SendMessageError extends SendMessageState {
   final String errorMessage;
-  ChatError({required this.errorMessage});
+  SendMessageError({required this.errorMessage});
 }
