@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/base_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/base_chat_bubble.dart';
 
 class FailedBubble extends StatelessWidget {
   final String message;

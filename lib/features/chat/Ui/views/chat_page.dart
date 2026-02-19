@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/services/get_it_service.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_app_bar.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/build_chat_app_bar.dart';
 
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/messages_list_view_bloc_consumer.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/messages_list_view_bloc_consumer.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
 import '../../domain/repo/get_gemine_reponse_repo.dart';
-import 'widgets/build_input_text.dart';
+import '../widgets/build_input_text.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});

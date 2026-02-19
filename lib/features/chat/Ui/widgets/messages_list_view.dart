@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/failed_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/failed_chat_bubble.dart';
 
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/loading_chat_bubble.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/message_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/loading_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/message_chat_bubble.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
 class MessagesListView extends StatelessWidget {

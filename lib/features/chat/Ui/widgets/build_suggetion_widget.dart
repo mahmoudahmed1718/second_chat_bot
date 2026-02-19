@@ -58,7 +58,7 @@ class SuggestionWidget extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       itemCount: _categories.length,
-      separatorBuilder: (_, __) => const Gap(24),
+      separatorBuilder: (_, _) => const Gap(24),
       itemBuilder: (context, index) {
         return _SuggestionSection(
           category: _categories[index],

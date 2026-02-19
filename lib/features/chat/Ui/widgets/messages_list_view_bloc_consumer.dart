@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_suggetion_widget.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/messages_list_view.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/build_suggetion_widget.dart';
+import 'package:second_chat_bot/features/chat/Ui/widgets/messages_list_view.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
 class MessageListViewBlocConsumer extends StatelessWidget {
