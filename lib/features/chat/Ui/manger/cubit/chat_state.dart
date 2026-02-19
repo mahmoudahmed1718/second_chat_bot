@@ -8,7 +8,7 @@ final class SendMessageInitial extends SendMessageState {}
 final class SendMessageLoading extends SendMessageState {}
 
 final class SendMessageLoaded extends SendMessageState {
-  final GeminiMessageEntity message;
+  final ChatEntity message;
 
   SendMessageLoaded({required this.message});
 }

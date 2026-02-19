@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:second_chat_bot/core/services/get_it_service.dart';
-import 'package:second_chat_bot/core/utils/app_storage.dart';
 import 'package:second_chat_bot/core/utils/assets.dart';
 import 'package:second_chat_bot/features/chat/Ui/views/chat_page.dart';
-import 'package:second_chat_bot/features/splash/presentation/view/on_boarding_view.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 
 class SplashView extends StatefulWidget {

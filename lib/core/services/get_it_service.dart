@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/dio_consumer.dart';
-import 'package:second_chat_bot/core/utils/app_storage.dart';
-import 'package:second_chat_bot/features/chat/data/repos/get_gemine_response_repo_impl.dart';
-import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_repo.dart';
+
+import 'package:second_chat_bot/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:second_chat_bot/features/chat/domain/repo/chat_repo.dart';
 
 final getIt = GetIt.instance;
 
@@ -15,7 +14,7 @@ void setUpGetIt() async {
 
   // getIt.registerSingleton<AppStorage>(AppStorage());
   getIt.registerSingleton<ApiConsumer>(DioConsumer(dio: Dio()));
-  getIt.registerSingleton<GetGemineReponseRepo>(
-    GetGemineResponseRepoImpl(apiConsumer: getIt<ApiConsumer>()),
+  getIt.registerSingleton<ChatRepo>(
+    ChatRepoImpl(apiConsumer: getIt<ApiConsumer>()),
   );
 }

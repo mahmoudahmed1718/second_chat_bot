@@ -6,17 +6,17 @@ import 'package:second_chat_bot/features/chat/data/models/gemine_reponse/gemine_
 import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/gemine_requset.dart';
 import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/content.dart';
 import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/part.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
-import 'package:second_chat_bot/features/chat/domain/repo/get_gemine_reponse_repo.dart';
+import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/domain/repo/chat_repo.dart';
 
-class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
+class ChatRepoImpl implements ChatRepo {
   final ApiConsumer apiConsumer;
 
-  GetGemineResponseRepoImpl({required this.apiConsumer});
+  ChatRepoImpl({required this.apiConsumer});
 
   @override
-  Future<Either<ServerException, GeminiMessageEntity>> getGemineReponse({
-    required List<GeminiMessageEntity> messages,
+  Future<Either<ServerException, ChatEntity>> getGemineReponse({
+    required List<ChatEntity> messages,
   }) async {
     try {
       final request = GemineRequset(
@@ -32,7 +32,7 @@ class GetGemineResponseRepoImpl implements GetGemineReponseRepo {
 
       final gemineResponseModel = GemineReponse.fromJson(response);
 
-      final GeminiMessageEntity entity = GeminiMessageEntity(
+      final ChatEntity entity = ChatEntity(
         text:
             gemineResponseModel.candidates?.first.content?.parts?.first.text ??
             '',
