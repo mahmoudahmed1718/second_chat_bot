@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_bubble.dart';
+
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/loading_chat_bubble.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/message_chat_bubble.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
 class MessagesListView extends StatelessWidget {
@@ -21,15 +23,14 @@ class MessagesListView extends StatelessWidget {
       itemBuilder: (context, index) {
         var newIndex = messages.length - (index + (isloading ? 0 : 1));
         if (isloading && index == 0) {
-          return const ChatBubble(isUser: false, message: '', isLoading: true);
+          return const LoadingChatBubble();
         }
 
         final message = messages[newIndex];
 
-        return ChatBubble(
+        return MessageChatBubble(
           isUser: message.isFromUser,
           message: message.text,
-          isLoading: false,
         );
       },
     );
