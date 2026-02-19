@@ -98,7 +98,12 @@ class _BuildInputTextState extends State<BuildInputText> {
                                   text: text,
                                   isFromUser: true,
                                 );
-                                widget.messages.add(message);
+                                if (SendMessageCubit is! SendMessageError) {
+                                  widget.messages.add(message);
+                                } else {
+                                  widget.messages.removeLast();
+                                  widget.messages.add(message);
+                                }
                                 context
                                     .read<SendMessageCubit>()
                                     .getGemineReponse(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
+import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_suggetion_widget.dart';
 import 'package:second_chat_bot/features/chat/Ui/views/widgets/messages_list_view.dart';
 import 'package:second_chat_bot/features/chat/domain/entites/gemini_message_entity.dart';
 
@@ -21,10 +22,16 @@ class MessageListViewBlocConsumer extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return MessagesListView(
-          isloading: state is SendMessageLoading,
-          messages: _messages,
-        );
+        if (state is SendMessageInitial) {
+          return SuggestionWidget(messages: _messages);
+        } else if (state is SendMessageLoaded) {
+          return MessagesListView(messages: _messages);
+        } else if (state is SendMessageError) {
+          return FaileurMessagesListview(messages: _messages);
+        } else if (state is SendMessageLoading) {
+          return LoadingMessageListView(messages: _messages);
+        }
+        return SizedBox.shrink();
       },
     );
   }

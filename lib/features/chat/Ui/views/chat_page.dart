@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:second_chat_bot/core/services/get_it_service.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 import 'package:second_chat_bot/features/chat/Ui/views/widgets/build_chat_app_bar.dart';
@@ -36,11 +37,15 @@ class _ChatPageState extends State<ChatPage> {
         resizeToAvoidBottomInset: true,
         appBar: buildChatAppBar(context),
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Expanded(child: MessageListViewBlocConsumer(messages: _messages)),
-            BuildInputText(messages: _messages),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              Expanded(child: MessageListViewBlocConsumer(messages: _messages)),
+              BuildInputText(messages: _messages),
+              Gap(16),
+            ],
+          ),
         ),
       ),
     );
