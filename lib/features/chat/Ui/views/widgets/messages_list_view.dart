@@ -16,13 +16,15 @@ class MessagesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      reverse: true,
       itemCount: isloading ? messages.length + 1 : messages.length,
       itemBuilder: (context, index) {
-        if (isloading && index == messages.length) {
+        var newIndex = messages.length - (index + (isloading ? 0 : 1));
+        if (isloading && index == 0) {
           return const ChatBubble(isUser: false, message: '', isLoading: true);
         }
 
-        final message = messages[index];
+        final message = messages[newIndex];
 
         return ChatBubble(
           isUser: message.isFromUser,
