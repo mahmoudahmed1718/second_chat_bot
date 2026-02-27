@@ -6,7 +6,7 @@ import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/build_chat_app_bar.dart';
 
 import 'package:second_chat_bot/features/chat/Ui/widgets/messages_list_view_bloc_consumer.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 
 import '../../domain/repo/chat_repo.dart';
 import '../widgets/build_input_text.dart';
@@ -20,7 +20,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<ChatEntity> _messages = [];
+  final List<ChatMessageModel> _messages = [];
 
   @override
   void dispose() {

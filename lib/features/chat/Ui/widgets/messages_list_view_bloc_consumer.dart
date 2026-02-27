@@ -5,22 +5,22 @@ import 'package:second_chat_bot/features/chat/Ui/widgets/build_suggetion_widget.
 import 'package:second_chat_bot/features/chat/Ui/widgets/faileur_messaage_list_view.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/loading_messages_list_view.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/messages_list_view.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 
 class MessageListViewBlocConsumer extends StatelessWidget {
   const MessageListViewBlocConsumer({
     super.key,
-    required List<ChatEntity> messages,
+    required List<ChatMessageModel> messages,
   }) : _messages = messages;
 
-  final List<ChatEntity> _messages;
+  final List<ChatMessageModel> _messages;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SendMessageCubit, SendMessageState>(
       listener: (context, state) {
         if (state is SendMessageLoaded) {
-          _messages.add(state.message);
+          _messages.add(state.messageModel);
         }
       },
       builder: (context, state) {

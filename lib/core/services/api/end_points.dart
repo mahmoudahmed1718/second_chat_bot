@@ -6,7 +6,7 @@ abstract class EndPoint {
 }
 
 abstract class Apikeys {
-  static const String apikey = 'AIzaSyCkAnIfVXZhdCfFwaEgOeaNluqzg79E4Xw';
+  static const String apikey = 'AIzaSyDTnwg9RlSYjrZ8-Air0rUay8_JC3OzOr0';
   static const String stauscode = "statusCode";
   static const String message = "message";
   static const String data = "error";

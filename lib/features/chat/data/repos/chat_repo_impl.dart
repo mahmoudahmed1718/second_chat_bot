@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:second_chat_bot/core/services/api/api_consumer.dart';
 import 'package:second_chat_bot/core/services/api/end_points.dart';
+import 'package:second_chat_bot/core/services/errors/error_model.dart';
 import 'package:second_chat_bot/core/services/errors/server_excption.dart';
-import 'package:second_chat_bot/features/chat/data/models/gemine_reponse/gemine_reponse.dart';
-import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/gemine_requset.dart';
-import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/content.dart';
-import 'package:second_chat_bot/features/chat/data/models/gemine_request/gemine_requset/part.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
+import 'package:second_chat_bot/features/chat/data/repos/unit_tests/chat_input_vaildator.dart';
+import 'package:second_chat_bot/features/chat/data/repos/unit_tests/chat_output_vaildator.dart';
+
 import 'package:second_chat_bot/features/chat/domain/repo/chat_repo.dart';
 
 class ChatRepoImpl implements ChatRepo {
@@ -15,31 +15,27 @@ class ChatRepoImpl implements ChatRepo {
   ChatRepoImpl({required this.apiConsumer});
 
   @override
-  Future<Either<ServerException, ChatEntity>> getGemineReponse({
-    required List<ChatEntity> messages,
+  Future<Either<ServerException, ChatMessageModel>> sendMessage({
+    required List<ChatMessageModel> messages,
   }) async {
+    ChatInputValidator.validateMessages(messages);
     try {
-      final request = GemineRequset(
-        contents: messages.map((e) {
-          return Content(parts: [Part(text: e.text)]);
-        }).toList(),
-      );
-
       final response = await apiConsumer.post(
         EndPoint.generateContent,
-        data: request.toJson(),
+        data: {
+          "contents": messages.map((message) => message.toJson()).toList(),
+        },
       );
+      final resultModel = ChatMessageModel.fromJson(response);
 
-      final gemineResponseModel = GemineReponse.fromJson(response);
-
-      final ChatEntity entity = ChatEntity(
-        text:
-            gemineResponseModel.candidates?.first.content?.parts?.first.text ??
-            '',
-        isFromUser: false,
+      ChatOutputValidator.validate(resultModel);
+      return Right(resultModel);
+    } on ArgumentError catch (e) {
+      return Left(
+        ServerException(
+          errorModel: ErrorModel(message: e.message ?? 'Unknown error'),
+        ),
       );
-
-      return Right(entity);
     } on ServerException catch (e) {
       return Left(e);
     }

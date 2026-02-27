@@ -41,6 +41,7 @@ dependencies:
   get_it: ^9.2.0
   hive_flutter: ^1.1.0
   meta: ^1.17.0
+  mocktail: ^1.0.4
   speech_to_text: ^7.3.0
 
 dev_dependencies:

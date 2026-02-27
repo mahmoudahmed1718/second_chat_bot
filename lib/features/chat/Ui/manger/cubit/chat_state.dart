@@ -8,9 +8,8 @@ final class SendMessageInitial extends SendMessageState {}
 final class SendMessageLoading extends SendMessageState {}
 
 final class SendMessageLoaded extends SendMessageState {
-  final ChatEntity message;
-
-  SendMessageLoaded({required this.message});
+  final ChatMessageModel messageModel;
+  SendMessageLoaded({required this.messageModel});
 }
 
 final class SendMessageError extends SendMessageState {

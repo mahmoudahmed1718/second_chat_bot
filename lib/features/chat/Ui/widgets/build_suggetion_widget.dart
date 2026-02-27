@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/suggetion_catogry.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/suggetion_chip.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
+
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 
 /// 1. Create a simple data model for your categories
@@ -11,7 +12,7 @@ import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 class SuggestionWidget extends StatelessWidget {
   const SuggestionWidget({super.key, required this.messages});
 
-  final List<ChatEntity> messages;
+  final List<ChatMessageModel> messages;
 
   /// 2. Move data out of the build method for better readability
   static const List<SuggestionCategory> _categories = [
@@ -58,7 +59,7 @@ class SuggestionWidget extends StatelessWidget {
   }
 
   void _handleSend(BuildContext context, String text) {
-    final message = ChatEntity(text: text, isFromUser: true);
+    final message = ChatMessageModel.fromUserMessage(text);
     messages.add(message);
     context.read<SendMessageCubit>().sendMessage(messages: messages);
   }

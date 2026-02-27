@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/failed_chat_bubble.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/message_chat_bubble.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 
 class FaileurMessagesListview extends StatelessWidget {
   const FaileurMessagesListview({super.key, required this.messages});
-  final List<ChatEntity> messages;
+  final List<ChatMessageModel> messages;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class FaileurMessagesListview extends StatelessWidget {
 
         if (index == 0) {
           return FailedBubble(
-            message: messages[newIndex].text,
+            message: messages[newIndex].displayText,
             onRetry: () {
               context.read<SendMessageCubit>().sendMessage(messages: messages);
             },
@@ -31,8 +31,8 @@ class FaileurMessagesListview extends StatelessWidget {
         return Visibility(
           visible: !(index == 1),
           child: MessageChatBubble(
-            isUser: message.isFromUser,
-            message: message.text,
+            isUser: message.isUser,
+            message: message.displayText,
           ),
         );
       },

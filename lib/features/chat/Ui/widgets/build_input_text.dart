@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:second_chat_bot/core/utils/app_styel.dart';
 import 'package:second_chat_bot/features/chat/Ui/manger/cubit/chat_cubit.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 import 'package:second_chat_bot/theme/app_colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class BuildInputText extends StatefulWidget {
-  final List<ChatEntity> messages;
+  final List<ChatMessageModel> messages;
   const BuildInputText({super.key, required this.messages});
 
   @override
@@ -62,7 +61,7 @@ class _BuildInputTextState extends State<BuildInputText> {
                       ),
                       border: InputBorder.none,
                     ),
-                    onChanged: (value) async {
+                    onChanged: (value) {
                       hasText.value = value != null && value.trim().isNotEmpty;
                     },
                   ),
@@ -87,28 +86,31 @@ class _BuildInputTextState extends State<BuildInputText> {
                         color: active ? AppColors.primaryColor : Colors.grey,
                       ),
                       onPressed: active
-                          ? () {
+                          ? () async {
                               final text = _formKey
                                   .currentState
                                   ?.fields['message']
                                   ?.value;
 
                               if (text != null && text.trim().isNotEmpty) {
-                                var message = ChatEntity(
-                                  text: text,
-                                  isFromUser: true,
-                                );
-                                if (SendMessageCubit is! SendMessageError) {
-                                  widget.messages.add(message);
-                                } else {
-                                  widget.messages.removeLast();
-                                  widget.messages.add(message);
-                                }
-                                context.read<SendMessageCubit>().sendMessage(
-                                  messages: widget.messages,
-                                );
+                                final userMessage =
+                                    ChatMessageModel.fromUserMessage(text);
+
+                                // Clear text field
                                 _formKey.currentState?.reset();
                                 hasText.value = false;
+
+                                // Add user message to the local list
+                                widget.messages.add(userMessage);
+
+                                // Send messages to Cubit
+                                await context
+                                    .read<SendMessageCubit>()
+                                    .sendMessage(
+                                      messages: [...widget.messages],
+                                    );
+
+                                // Cubit will handle adding assistant response
                               }
                             }
                           : null,
@@ -132,7 +134,6 @@ class _BuildInputTextState extends State<BuildInputText> {
         _speech.listen(
           onResult: (result) {
             final text = result.recognizedWords;
-
             _formKey.currentState?.fields['message']?.didChange(text);
             hasText.value = text.trim().isNotEmpty;
           },

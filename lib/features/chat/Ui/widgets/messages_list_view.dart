@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:second_chat_bot/features/chat/Ui/widgets/message_chat_bubble.dart';
-import 'package:second_chat_bot/features/chat/domain/entites/chat_entity.dart';
+import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 
 class MessagesListView extends StatelessWidget {
   const MessagesListView({super.key, required this.messages});
 
-  final List<ChatEntity> messages;
+  final List<ChatMessageModel> messages;
 
   @override
   @override
@@ -17,8 +17,8 @@ class MessagesListView extends StatelessWidget {
         var reversedList = messages.reversed.toList();
         final message = reversedList[index];
         return MessageChatBubble(
-          isUser: message.isFromUser,
-          message: message.text,
+          isUser: message.isUser,
+          message: message.displayText.toString(),
         );
       },
     );
