@@ -13,29 +13,40 @@ class FaileurMessagesListview extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       reverse: true,
+      padding: const EdgeInsets.symmetric(vertical: 16),
       itemCount: messages.length + 1,
       itemBuilder: (context, index) {
-        var newIndex = messages.length - (index + 1);
+        var newIndex = messages.length - (index + 0);
 
         if (index == 0) {
           return FailedBubble(
-            message: messages[newIndex].displayText,
+            message: 'error',
             onRetry: () {
               context.read<SendMessageCubit>().sendMessage(messages: messages);
             },
           );
         }
-
-        final message = messages[newIndex];
-
+        final msg = messages[newIndex];
         return Visibility(
-          visible: !(index == 1),
+          visible: hideIFErrorMessage(index),
           child: MessageChatBubble(
-            isUser: message.isUser,
-            message: message.displayText,
+            isUser: msg.isUser,
+            message: msg.displayText.toString(),
           ),
         );
       },
     );
+  }
+
+  /// Returns true if the message at [index] should be visible.
+  ///
+  /// When an error (failure) occurs, the error bubble is inserted at index 0,
+  /// and the most recent (last) user message is at index 1. To prevent showing
+  /// the last user message twice (once in the error bubble, once as a normal bubble),
+  /// this function hides the message at index 1 when isFailure is true.
+  ///
+  /// In all other cases (not failure, or any other index), the message is visible.
+  bool hideIFErrorMessage(int index) {
+    return index != 1;
   }
 }

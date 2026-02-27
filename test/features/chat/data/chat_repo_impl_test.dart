@@ -1,17 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:second_chat_bot/core/services/api/api_consumer.dart';
+
 import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 import 'package:second_chat_bot/features/chat/data/models/chat_message_part_model.dart';
 
 import 'package:second_chat_bot/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:second_chat_bot/features/chat/data/services/gemine_chat_service.dart';
 
 void main() {
   late ChatRepoImpl chatRepoImpl;
-  late MockApiConsumer mockApiConsumer;
+  late MockGemenaiChatService mockApiConsumer;
   setUp(() {
-    mockApiConsumer = MockApiConsumer();
-    chatRepoImpl = ChatRepoImpl(apiConsumer: mockApiConsumer);
+    mockApiConsumer = MockGemenaiChatService();
+    chatRepoImpl = ChatRepoImpl(gemenaiChatService: mockApiConsumer);
   });
   setUpAll(() {});
   group('send message input validation', () {
@@ -40,23 +41,21 @@ void main() {
   group('send message output validation', () {
     test('should throw ArgumentError when API response is empty', () {
       when(
-        () => mockApiConsumer.post(any(), data: any(named: 'data')),
-      ).thenAnswer((_) async => {});
+        () => mockApiConsumer.sendMessage(messages: any(named: 'messages')),
+      ).thenAnswer((_) async => ChatMessageModel(parts: [], role: 'assistant'));
       expect(
         () => chatRepoImpl.sendMessage(messages: []),
         throwsA(isA<ArgumentError>()),
       );
     });
-    test('should throw a stateError if response has invaild role', () {
+    test('should throw a StateError if response has invalid role', () {
       when(
-        () => mockApiConsumer.post(any(), data: any(named: 'data')),
+        () => mockApiConsumer.sendMessage(messages: any(named: 'messages')),
       ).thenAnswer(
-        (_) async => {
-          "role": "invalid_role",
-          "parts": [
-            {"text": "Hello, how can I assist you today?"},
-          ],
-        },
+        (_) async => ChatMessageModel(
+          parts: [ChatMessagePartModel(text: 'Hello')],
+          role: 'invalid_role',
+        ),
       );
       expect(
         () => chatRepoImpl.sendMessage(
@@ -70,24 +69,31 @@ void main() {
         throwsA(isA<StateError>()),
       );
     });
+    test(
+      'should throw state if API Response error: Empty text in response parts.',
+      () {
+        when(
+          () => mockApiConsumer.sendMessage(messages: any(named: 'messages')),
+        ).thenAnswer(
+          (_) async => ChatMessageModel(
+            parts: [ChatMessagePartModel(text: '')],
+            role: 'assistant',
+          ),
+        );
+        expect(
+          () => chatRepoImpl.sendMessage(
+            messages: [
+              ChatMessageModel(
+                parts: [ChatMessagePartModel(text: 'Hello')],
+                role: 'user',
+              ),
+            ],
+          ),
+          throwsA(isA<StateError>()),
+        );
+      },
+    );
   });
-  test(
-    'should throw state if API Response error: Empty text in response parts.',
-    () {
-      when(() => mockApiConsumer.post(any(), data: any(named: 'data')));
-      expect(
-        () => chatRepoImpl.sendMessage(
-          messages: [
-            ChatMessageModel(
-              parts: [ChatMessagePartModel(text: 'Hello')],
-              role: 'user',
-            ),
-          ],
-        ),
-        throwsA(isA<StateError>()),
-      );
-    },
-  );
 }
 
-class MockApiConsumer extends Mock implements ApiConsumer {}
+class MockGemenaiChatService extends Mock implements GemenaiChatService {}

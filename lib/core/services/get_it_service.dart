@@ -1,10 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:second_chat_bot/core/services/api/api_consumer.dart';
-import 'package:second_chat_bot/core/services/api/dio_consumer.dart';
-
-import 'package:second_chat_bot/features/chat/data/repos/chat_repo_impl.dart';
-import 'package:second_chat_bot/features/chat/domain/repo/chat_repo.dart';
+import 'package:second_chat_bot/core/services/api/api_client.dart';
+import 'package:second_chat_bot/features/chat/data/services/gemine_chat_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -12,9 +9,13 @@ void setUpGetIt() async {
   // await Hive.initFlutter();
   // await Hive.openBox('appBox');
 
-  // getIt.registerSingleton<AppStorage>(AppStorage());
-  getIt.registerSingleton<ApiConsumer>(DioConsumer(dio: Dio()));
-  getIt.registerSingleton<ChatRepo>(
-    ChatRepoImpl(apiConsumer: getIt<ApiConsumer>()),
+  getIt.registerSingleton<Dio>(Dio());
+  getIt.registerSingleton<DioApiClient>(
+    DioApiClient(
+      baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
+    ),
+  );
+  getIt.registerSingleton<GemenaiChatService>(
+    GemenaiChatService(apiClient: getIt<DioApiClient>()),
   );
 }

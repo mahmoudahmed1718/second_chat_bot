@@ -7,6 +7,8 @@ import 'package:second_chat_bot/features/chat/Ui/widgets/build_chat_app_bar.dart
 
 import 'package:second_chat_bot/features/chat/Ui/widgets/messages_list_view_bloc_consumer.dart';
 import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
+import 'package:second_chat_bot/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:second_chat_bot/features/chat/data/services/gemine_chat_service.dart';
 
 import '../../domain/repo/chat_repo.dart';
 import '../widgets/build_input_text.dart';
@@ -30,8 +32,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          SendMessageCubit(getGemineReponseRepo: getIt.get<ChatRepo>()),
+      create: (context) => SendMessageCubit(
+        chatRepo: ChatRepoImpl(gemenaiChatService: getIt<GemenaiChatService>()),
+      ),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: buildChatAppBar(context),

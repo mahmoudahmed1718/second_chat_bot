@@ -1,21 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
-
 import 'package:second_chat_bot/features/chat/domain/repo/chat_repo.dart';
+
 part 'chat_state.dart';
 
 class SendMessageCubit extends Cubit<SendMessageState> {
-  final ChatRepo getGemineReponseRepo;
-  SendMessageCubit({required this.getGemineReponseRepo})
-    : super(SendMessageInitial());
+  SendMessageCubit({required this.chatRepo}) : super(SendMessageInitial());
+  final ChatRepo chatRepo;
+
   Future<void> sendMessage({required List<ChatMessageModel> messages}) async {
     emit(SendMessageLoading());
-    final result = await getGemineReponseRepo.sendMessage(messages: messages);
-    result.fold(
-      (l) =>
-          emit(SendMessageError(errorMessage: l.errorModel.message.toString())),
-      (r) => emit(SendMessageLoaded(messageModel: r)),
-    );
+    try {
+      final chatMessage = await chatRepo.sendMessage(messages: messages);
+      emit(SendMessageSuccess(chatMessageModel: chatMessage));
+    } catch (e) {
+      emit(SendMessageFailure(error: e.toString()));
+    }
   }
 }

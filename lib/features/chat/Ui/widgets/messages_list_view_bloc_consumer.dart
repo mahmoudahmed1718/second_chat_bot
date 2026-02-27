@@ -19,16 +19,16 @@ class MessageListViewBlocConsumer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SendMessageCubit, SendMessageState>(
       listener: (context, state) {
-        if (state is SendMessageLoaded) {
-          _messages.add(state.messageModel);
+        if (state is SendMessageSuccess) {
+          _messages.add(state.chatMessageModel);
         }
       },
       builder: (context, state) {
         if (state is SendMessageInitial) {
           return SuggestionWidget(messages: _messages);
-        } else if (state is SendMessageLoaded) {
+        } else if (state is SendMessageSuccess) {
           return MessagesListView(messages: _messages);
-        } else if (state is SendMessageError) {
+        } else if (state is SendMessageFailure) {
           return FaileurMessagesListview(messages: _messages);
         } else if (state is SendMessageLoading) {
           return LoadingMessageListView(messages: _messages);

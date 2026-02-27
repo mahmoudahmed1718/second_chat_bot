@@ -7,7 +7,10 @@ class ServerException implements Exception {
   ServerException({required this.errorModel});
 }
 
-void handleErrorExpectation(DioException e) {
+Future<void> handleErrorExpectation(
+  DioException e, {
+  int retryCount = 0,
+}) async {
   final fallbackError = ErrorModel(
     statusCode: null,
     message: "No internet connection. Please check your network.",
@@ -20,7 +23,13 @@ void handleErrorExpectation(DioException e) {
     case DioExceptionType.receiveTimeout:
     case DioExceptionType.connectionError:
     case DioExceptionType.unknown:
-      throw ServerException(errorModel: fallbackError);
+      if (retryCount < 3) {
+        // Retry up to 3 times for network errors
+        await Future.delayed(Duration(seconds: 2));
+        throw ServerException(errorModel: fallbackError);
+      } else {
+        throw ServerException(errorModel: fallbackError);
+      }
 
     case DioExceptionType.badCertificate:
     case DioExceptionType.cancel:
