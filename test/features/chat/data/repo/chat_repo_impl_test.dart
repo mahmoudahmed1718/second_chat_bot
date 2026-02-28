@@ -66,7 +66,7 @@ void main() {
             ),
           ],
         ),
-        throwsA(isA<StateError>()),
+        throwsA(isA<ArgumentError>()),
       );
     });
     test(
@@ -89,7 +89,7 @@ void main() {
               ),
             ],
           ),
-          throwsA(isA<StateError>()),
+          throwsA(isA<ArgumentError>()),
         );
       },
     );

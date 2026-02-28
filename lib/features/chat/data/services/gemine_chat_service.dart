@@ -16,6 +16,7 @@ class GemenaiChatService {
 
     while (attempts < maxAttempts) {
       try {
+        print('Attempt: ${attempts + 1}');
         attempts++;
 
         final response = await apiClient.post(
@@ -32,22 +33,25 @@ class GemenaiChatService {
         );
 
         return ChatMessageModel.fromJson(response['candidates'][0]['content']);
-      } on DioException catch (e) {
-        if (e.response != null) {
-          throw Exception("Server error");
-        }
+      } catch (e) {
+        if (!_shouldRetry(e) || attempts == maxAttempts) rethrow;
 
-        if (e.type == DioExceptionType.connectionError ||
-            e.type == DioExceptionType.connectionTimeout) {
-          if (attempts >= maxAttempts) {
-            throw Exception("No internet connection");
-          }
-        } else {
-          throw Exception("Unexpected error");
-        }
+        await Future.delayed(Duration(seconds: 1));
       }
     }
-
     throw Exception("Failed after retries");
+  }
+
+  static const _retryTypes = {
+    DioExceptionType.connectionError,
+    DioExceptionType.connectionTimeout,
+    DioExceptionType.sendTimeout,
+    DioExceptionType.receiveTimeout,
+  };
+  bool _shouldRetry(Object e) {
+    if (e is DioException) {
+      return _retryTypes.contains(e.type);
+    }
+    return false;
   }
 }

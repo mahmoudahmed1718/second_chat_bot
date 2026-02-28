@@ -15,7 +15,9 @@ class ChatRepoImpl extends ChatRepo {
     required List<ChatMessageModel> messages,
   }) async {
     ChatInputValidator.validateMessages(messages);
-    ChatOutputValidator.validate(messages.last);
-    return _gemenaiChatService.sendMessage(messages: messages);
+
+    final response = await _gemenaiChatService.sendMessage(messages: messages);
+    ChatOutputValidator.validate(response);
+    return response;
   }
 }

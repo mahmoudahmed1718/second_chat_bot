@@ -1,7 +1,7 @@
 // chat_input_validator.dart
 import 'package:second_chat_bot/features/chat/data/models/chat_message_model.dart';
 
-class ChatInputValidator {
+mixin ChatInputValidator {
   static void validateMessages(List<ChatMessageModel> messages) {
     if (messages.isEmpty) {
       throw ArgumentError("Messages list cannot be empty");
